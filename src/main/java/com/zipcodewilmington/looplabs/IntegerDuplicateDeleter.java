@@ -17,9 +17,27 @@ public final class IntegerDuplicateDeleter extends DuplicateDeleter<Integer> {
 
     @Override
     public Integer[] removeDuplicates(int maxNumberOfDuplications) {
-//List<String> list = new LinkedList<String>(Arrays.asList(split));
+        int numOfElementsToDelete = 0;
+        Integer[] duplicates = countElements();
+        for(Integer i: duplicates){
+            if(i>= maxNumberOfDuplications){
+                numOfElementsToDelete++;
+            }
+        }
 
-        int count = 0;
+        Integer[] outputArr = new Integer[array.length - numOfElementsToDelete];
+        if(outputArr.length==0) return outputArr;
+        int j = 0;
+        for(int i=0; i<duplicates.length; i++){
+            if(duplicates[i]<maxNumberOfDuplications){
+                outputArr[j] = array[i];
+                j++;
+            }
+        }
+        return outputArr;
+    }
+
+      /*  int count = 0;  //(is the .remove() function disabled? )
         Integer[] finalArr;
         LinkedList<Integer> list = new LinkedList<>(Arrays.asList(array));
         String strArr = "";
@@ -43,43 +61,45 @@ public final class IntegerDuplicateDeleter extends DuplicateDeleter<Integer> {
            finalArr[i] = strArr.charAt(i)- '0';
         }
 
-        return finalArr;
-
-    }
-
-    public Integer[] removeElementAtIndex(Integer[] arrayToBeCloned, int index) {
-        Integer[] clonedArray = arrayToBeCloned.clone();
-        Integer[] leftArray = Arrays.copyOfRange(clonedArray, 0, index);
-        Integer[] rightArray = Arrays.copyOfRange(clonedArray, index + 1, arrayToBeCloned.length);
-        Integer[] mergedArray = merge(leftArray,rightArray);
-        return mergedArray;
-    }
-
-    public Integer[] merge(Integer[] array1, Integer[] array2) {
-        Integer[] concate = new Integer[array1.length + array2.length];
-        System.arraycopy(array1, 0, concate, 0, array1.length);
-        System.arraycopy(array2, 0, concate, array1.length, array2.length);
-        return concate;
-    }
+        return finalArr;*/
 
 
     @Override
     public Integer[] removeDuplicatesExactly(int exactNumberOfDuplications) {
-
-
-        return new Integer[0];
-    }
-
-    public int getNumOfOccurance(Integer currentValue){
-        int count =0;
-        for(int i=0; i<array.length; i++){
-            Integer integer = array[i];
-            if(integer.equals(currentValue)){
-                count++;
+        int deleteIndex =0;
+        Integer[] duplicates = countElements();
+        for(Integer i: duplicates){
+            if(i == exactNumberOfDuplications){
+                deleteIndex++;
             }
-        } return count;
+        }
+
+        Integer[]outputArr = new Integer[array.length - deleteIndex];
+        int j=0;
+        for (int i = 0; i < duplicates.length; i++) {
+            if(duplicates[i] != exactNumberOfDuplications){
+                outputArr[j] = array[i];
+                j++;
+            }
+        }
+
+        return outputArr;
     }
 
+    public Integer [] countElements(){
+        Integer[] dupliCounter = new Integer[array.length];
+        for(int i=0; i<array.length; i++){
+            int count =1;
+            for(int j=0; j<array.length; j++){
+                if(i != j) {
+                    if (array[i].equals(array[j])) {
+                        count++;
+                    }
+                }
+            }dupliCounter[i] = count;
+        }
+        return dupliCounter;
+    }
 
 }
 
